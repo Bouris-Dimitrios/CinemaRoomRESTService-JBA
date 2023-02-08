@@ -1,5 +1,7 @@
 package cinema.repository;
 
+import cinema.dtos.SeatDto;
+import cinema.dtos.SimpleSeatDTO;
 import cinema.model.Cinema;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -26,4 +28,11 @@ public class CinemaRepository {
     }
 
 
+    public SeatDto purchase(int row, int column) {
+        return cinema.book(row,column);
+    }
+
+    public SimpleSeatDTO returnTicket(String token) {
+       return cinema.returnTicket(token);
+    }
 }

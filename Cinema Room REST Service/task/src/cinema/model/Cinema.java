@@ -2,7 +2,8 @@ package cinema.model;
 
 
 import cinema.dtos.SeatDto;
-import cinema.dtos.SimpleSeatDTO;
+import cinema.dtos.SimpleSeatDto;
+import cinema.dtos.StatsDto;
 import cinema.exceptions.SeatBookedException;
 import cinema.exceptions.UuidNotIdentifiedException;
 import cinema.exceptions.WrongColumnRowException;
@@ -49,16 +50,24 @@ public class Cinema {
         return SeatDto.of(seat);
     }
 
-    public SimpleSeatDTO returnTicket(String token) {
+    public SimpleSeatDto returnTicket(String token) {
         for(Seat seat : seats){
             if(seat.getUuid().toString().equals(token)){
                 seat.booked = false;
-                return SimpleSeatDTO.of(seat);
+                return SimpleSeatDto.of(seat);
             }
         }
        throw new UuidNotIdentifiedException("Wrong token!");
     }
 
+
+    public List<Seat> getSeats(){
+        List<Seat> result = new ArrayList<>();
+        for(Seat seat : seats){
+            result.add (new Seat(seat));
+        }
+        return result;
+    }
 
     @JsonIgnoreProperties(value = { "booked", "uuid" })
     public
@@ -87,6 +96,13 @@ public class Cinema {
             this.uuid = UUID.randomUUID();
         }
 
+        private Seat(Seat seat){
+            this.row = seat.row;
+            this.column = seat.column;
+            this.booked = seat.booked;
+            this.price = seat.price;
+            this.uuid = seat.uuid;
+        }
         public int getRow() {
             return row;
         }

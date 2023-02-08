@@ -7,14 +7,14 @@ import java.util.UUID;
 public class SeatDto {
     public static final SeatDto EMPTY = new SeatDto(-1,-1,-1, UUID.randomUUID());
 
-    SimpleSeatDTO ticket;
+    SimpleSeatDto ticket;
     private UUID token;
 
     public SeatDto() {
     }
 
     public SeatDto(int row, int column, int price, UUID uuid) {
-        ticket = new SimpleSeatDTO(row, column, price);
+        ticket = new SimpleSeatDto(row, column, price);
         this.token = uuid;
     }
 
@@ -23,7 +23,7 @@ public class SeatDto {
         return new SeatDto(seat.getRow(), seat.getColumn(), seat.getPrice(), seat.getUuid());
     }
 
-    public SimpleSeatDTO getTicket() {
+    public SimpleSeatDto getTicket() {
         return ticket;
     }
 

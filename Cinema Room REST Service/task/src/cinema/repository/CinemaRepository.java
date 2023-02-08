@@ -1,13 +1,15 @@
 package cinema.repository;
 
 import cinema.dtos.SeatDto;
-import cinema.dtos.SimpleSeatDTO;
+import cinema.dtos.SimpleSeatDto;
+import cinema.dtos.StatsDto;
 import cinema.model.Cinema;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 
 @Repository
 public class CinemaRepository {
@@ -32,7 +34,10 @@ public class CinemaRepository {
         return cinema.book(row,column);
     }
 
-    public SimpleSeatDTO returnTicket(String token) {
+    public SimpleSeatDto returnTicket(String token) {
        return cinema.returnTicket(token);
     }
+
+
+
 }

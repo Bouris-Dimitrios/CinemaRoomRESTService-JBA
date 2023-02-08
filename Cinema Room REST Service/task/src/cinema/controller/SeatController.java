@@ -2,10 +2,11 @@ package cinema.controller;
 
 
 import cinema.dtos.SeatDto;
-import cinema.dtos.SimpleSeatDTO;
+import cinema.dtos.SimpleSeatDto;
 import cinema.exceptions.SeatBookedException;
 import cinema.exceptions.UuidNotIdentifiedException;
 import cinema.exceptions.WrongColumnRowException;
+import cinema.service.AuthService;
 import cinema.utils.SeatError;
 import cinema.service.CinemaServcice;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -23,11 +24,15 @@ import java.util.Map;
 @RestController
 public class SeatController {
     private static final Logger LOGGER = LoggerFactory.getLogger(SeatController.class);
+
     CinemaServcice cinemaServcice;
+    AuthService authService;
+
     ObjectMapper om = new ObjectMapper();
 
-    public SeatController(CinemaServcice cinemaServcice) {
+    public SeatController(CinemaServcice cinemaServcice, AuthService authService) {
         this.cinemaServcice = cinemaServcice;
+        this.authService = authService;
     }
 
     @GetMapping("/seats")
@@ -36,7 +41,7 @@ public class SeatController {
     }
 
     @PostMapping("/purchase")
-    public ResponseEntity<String> purchase(@RequestBody SimpleSeatDTO requestBody) throws JsonProcessingException {
+    public ResponseEntity<String> purchase(@RequestBody SimpleSeatDto requestBody) throws JsonProcessingException {
         SeatDto result = null;
         try {
             result = cinemaServcice.purchase(requestBody.getRow(), requestBody.getColumn());
@@ -53,7 +58,7 @@ public class SeatController {
     public ResponseEntity<String> returnTicket(@RequestBody String tokenJson) throws JsonProcessingException {
         JsonNode parent = new ObjectMapper().readTree(tokenJson);
         String token = parent.path("token").asText();
-        SimpleSeatDTO result = null;
+        SimpleSeatDto result = null;
         try {
             result = cinemaServcice.returnTicket(token);
 
@@ -63,5 +68,13 @@ public class SeatController {
         }
         return new ResponseEntity<>(om.writeValueAsString(Map.of("returned_ticket", result)), HttpStatus.OK);
 
+    }
+
+    @PostMapping("/stats")
+    public  ResponseEntity<String> stats(@RequestParam(required = false) String password) throws JsonProcessingException {
+        if(authService.userAuthenticated(password)){
+            return new ResponseEntity<>(om.writeValueAsString(cinemaServcice.getStats()),HttpStatus.OK);
+        }
+        return new ResponseEntity<>(om.writeValueAsString(SeatError.INSTANCE.unauthorized()), HttpStatus.UNAUTHORIZED);
     }
 }

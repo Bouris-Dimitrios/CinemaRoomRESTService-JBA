@@ -2,29 +2,27 @@ package cinema.dtos;
 
 import cinema.model.Cinema;
 
-import java.util.UUID;
 
-
-public class SimpleSeatDTO {
-    public static final SimpleSeatDTO EMPTY = new SimpleSeatDTO(-1,-1,-1);
+public class SimpleSeatDto {
+    public static final SimpleSeatDto EMPTY = new SimpleSeatDto(-1,-1,-1);
     private int row;
     private int column;
     private int price;
 
 
-    public SimpleSeatDTO() {
+    public SimpleSeatDto() {
     }
 
-    public SimpleSeatDTO(int row, int column, int price) {
+    public SimpleSeatDto(int row, int column, int price) {
         this.row = row;
         this.column = column;
         this.price = price;
 
     }
 
-    public static SimpleSeatDTO of(Cinema.Seat seat) {
+    public static SimpleSeatDto of(Cinema.Seat seat) {
 
-        return new SimpleSeatDTO(seat.getRow(), seat.getColumn(), seat.getPrice());
+        return new SimpleSeatDto(seat.getRow(), seat.getColumn(), seat.getPrice());
     }
 
     public int getRow() {

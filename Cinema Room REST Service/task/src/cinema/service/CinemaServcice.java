@@ -1,7 +1,8 @@
 package cinema.service;
 
 import cinema.dtos.SeatDto;
-import cinema.dtos.SimpleSeatDTO;
+import cinema.dtos.SimpleSeatDto;
+import cinema.dtos.StatsDto;
 import cinema.model.Cinema;
 
 public interface CinemaServcice {
@@ -9,5 +10,7 @@ public interface CinemaServcice {
 
     SeatDto purchase(int row, int column);
 
-    SimpleSeatDTO returnTicket(String token);
+    SimpleSeatDto returnTicket(String token);
+
+    StatsDto getStats();
 }
